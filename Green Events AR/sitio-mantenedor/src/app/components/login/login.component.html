@@ -1,0 +1,40 @@
+<main style="background:url(assets/img/bg-ge.jpg) center center;">
+  <div class="container-fluid">
+    <div class="row pt-5">
+      <div class="card col-11 col-sm-8 col-md-6 col-xl-3 mx-auto mt-5 shadow-lg">
+        <div class="row p-3">
+          <form #formLogin="ngForm" (ngSubmit)="login()" class="col-12" novalidate autocomplete="off">
+            <div class="col-12">
+              <h2 class="font-weight-bold">Green Events</h2>
+              <p class="pb-1">Ingreso a Administración de Eventos</p>
+            </div>
+            <div class="col-12 form-group">
+              <label>Nombre de Usuario:</label>
+              <input required [spellcheck]="false" maxlength="128" type="text" name="usuario" #usuario="ngModel"
+                     [(ngModel)]="inUsuario"
+                     class="form-control" placeholder="Ingresa el nombre de usuario">
+              <ng-container *ngIf="usuario.invalid && (usuario.dirty || usuario.touched)">
+                    <span class="form-error modal-error" *ngIf="formLogin.hasError('required', 'usuario')">
+                        Debes ingresar un usuario.
+                    </span>
+              </ng-container>
+            </div>
+            <div class="col-12 form-group">
+              <label>Clave:</label>
+              <input required maxlength="50" type="password" name="contrasena" #contrasena="ngModel"
+                     [(ngModel)]="inPassword" class="form-control" placeholder="******">
+              <ng-container *ngIf="contrasena.invalid && (contrasena.dirty || contrasena.touched)">
+                    <span class="form-error" *ngIf="formLogin.hasError('required', 'contrasena')">
+                        Debes ingresar una contraseña.
+                    </span>
+              </ng-container>
+            </div>
+            <div class="col-12  my-2">
+              <button type="submit" id="loginButton" class="btn btn-primary col-12">Ingresar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

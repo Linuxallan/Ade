@@ -1,0 +1,190 @@
+<app-header [tab]="'eventos'"></app-header>
+
+<main>
+  <div class="container">
+
+    <div class="row">
+
+      <div class="col-12 ml-n2 mt-n3">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item ml-n2" aria-current="page"><a [routerLink]="['/eventos']">Eventos</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Editar Evento</li>
+          </ol>
+        </nav>
+      </div>
+      <div class="col-12 mt-n2">
+        <h1 class="texto-color-2">Agregar Evento</h1>
+      </div>
+      <div class="col-12 mt-n2">
+        <p>Ingresa los datos del evento. Cuando guardes, la carga se podría demorar un poco. Puedes consultar el estado
+          desde el listado de Eventos.</p>
+      </div>
+    </div>
+    <form [formGroup]="form" (ngSubmit)="actualizar()">
+      <div class="row">
+        <div style="width:calc(100% - 58px)!important;" class="mx-auto">
+          <div class="row">
+            <div class="col-12 card p-3">
+              <div class="row">
+                <div class="col-12">
+                  <h3 class="texto-color-2 font-weight-bold">Información del Evento</h3>
+                </div>
+                <div class="col-12 col-md-4 mb-2 form-group">
+                  <label>Código:</label>
+                  <input type="text" class="form-control" placeholder="Ingresa el Codigo" formControlName="id" disabled>
+                </div>
+                <div class="col-12 col-md-8 mb-2 form-group">
+                  <label>Título:</label>
+                  <input type="text" class="form-control" placeholder="Ingresa el Título" formControlName="titulo"
+                         [ngClass]="{ 'is-invalid': submitted && f.titulo.errors }">
+                  <div *ngIf="submitted && f.titulo.errors" class="invalid-feedback">
+                    <div *ngIf="f.titulo.errors.required">Debe ingresar un título al evento</div>
+                  </div>
+                </div>
+                <div class="col-12 col-md-4 mb-2 form-group">
+                  <label>Dominio:</label>
+                  <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Dominio del evento" formControlName="dominio"
+                           disabled>
+                    <span class="input-group-addon addon-inline input-source-observer">.{{dominio}}</span>
+                  </div>
+                </div>
+                <div class="col-12 col-md-4 mb-2 form-group">
+                  <label>Región:</label>
+                  <select class="form-control" formControlName="region" disabled>
+                    <option *ngFor="let region of regiones" [value]="region.codigo">
+                      {{region.nombre}}
+                    </option>
+                  </select>
+                </div>
+                <div class="col-12 col-md-4 mb-2 form-group">
+                  <label>Token WELCU:</label>
+                  <input type="text" class="form-control" placeholder="Ingresa el Token de Evento WELCU"
+                         formControlName="token" [ngClass]="{ 'is-invalid': submitted && f.token.errors }">
+                  <div *ngIf="submitted && f.token.errors" class="invalid-feedback">
+                    <div *ngIf="f.token.errors.required">Debe ingresar el token del evento WELCU</div>
+                  </div>
+                </div>
+                <div class="col-12 col-md-6 mb-2 form-group">
+                  <label>API Key 8th Wall:</label>
+                  <input type="text" class="form-control" placeholder="Ingresa la API Key de 8th Wall"
+                         formControlName="apiKey" [ngClass]="{ 'is-invalid': submitted && f.apiKey.errors }">
+                  <div *ngIf="submitted && f.apiKey.errors" class="invalid-feedback">
+                    <div *ngIf="f.apiKey.errors.required">Debe ingresar el API Key de 8th Wall</div>
+                  </div>
+                </div>
+                <div class="col-12 col-md-4 mb-2 form-group">
+                  <label>Imagen de cabecera:</label>
+                  <input type="file" id="customFileLang" class="form-control"
+                         formControlName="imagenIn" (change)="onFileChange($event, 'imagen')"
+                         accept=".png" [ngClass]="{ 'is-invalid': submitted && f.imagenIn.errors}">
+                  <div *ngIf="submitted && f.imagenIn.errors" class="invalid-feedback-c">
+                    <div *ngIf="f.imagenIn.errors.required">Debe seleccionar una imagen</div>
+                  </div>
+                </div>
+                <div class="col-12 col-md-4 mb-4">
+                  <span><img *ngIf="!!imagenPre" [src]="imagenPre" width="70%" class="pt-4"/></span>
+                </div>
+                <div class="col-12">
+                  <label>Descripción:</label>
+                  <textarea type="text" class="form-control" placeholder="Ingresa la descripción"
+                            formControlName="descripcion"
+                            [ngClass]="{ 'is-invalid': submitted && f.descripcion.errors}"></textarea>
+                  <div *ngIf="submitted && f.descripcion.errors" class="invalid-feedback-c">
+                    <div *ngIf="f.descripcion.errors.required">Debe ingresar la descripción del evento</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row mt-4">
+        <div class="col-12">
+          <h3 class="texto-color-2 font-weight-bold">Experiencias</h3>
+        </div>
+      </div>
+
+      <div formArrayName="experiencias">
+        <div class="row mb-3"
+             *ngFor="let exp of expFormArray.controls; let i = index" [formGroupName]="i">
+          <div style="width:calc(100% - 58px)!important;" class="mx-auto">
+            <div class="row">
+              <div class="col-12 card p-3">
+                <div class="row">
+                  <a (click)="eliminarExperiencia(i)" data-toggle="tooltip" title="Eliminar este registro"
+                     class="text-right" style="position: absolute;right:10px; z-index: 1">
+                    <img src="assets/img/cancelar.svg">
+                  </a>
+                  <div class="col-12 col-md-8 pt-3 mb-2">
+                    <label>Nombre de la Experiencia:</label>
+                    <input type="text" id="{{'nombre_' + i}}" class="form-control"
+                           placeholder="Ingresa el nombre de la Experiencia"
+                           formControlName="nombre"
+                           [ngClass]="{ 'is-invalid': submitted && this.expFormArray.get([i]).controls.nombre.errors}">
+                    <div *ngIf="submitted && this.expFormArray.get([i]).controls.nombre.errors"
+                         class="invalid-feedback-c">
+                      <div *ngIf="this.expFormArray.get([i]).controls.nombre.errors.required">
+                        Debe ingresar el nombre para la experiencia
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-4 pt-3 mb-2">
+                    <label>Modelo 3D:</label>
+                    <input type="file" id="{{'modelo_' + i}}" class="form-control"
+                           (change)="onFileChange($event, 'modelo', i)"
+                           accept=".zip" formControlName="modeloIn"
+                           [ngClass]="{ 'is-invalid': submitted && this.expFormArray.get([i]).controls.modeloIn.errors}">
+                    <div *ngIf="submitted && this.expFormArray.get([i]).controls.modeloIn.errors"
+                         class="invalid-feedback-c">
+                      <div *ngIf="this.expFormArray.get([i]).controls.modeloIn.errors.required">
+                        Debe seleccionar un modelo para la experiencia
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <label>Descripción:</label>
+                    <textarea type="text" id="{{'descripcion_' + i}}" class="form-control"
+                              placeholder="Ingresa la descripción" formControlName="descripcion"
+                              [ngClass]="{ 'is-invalid': submitted && this.expFormArray.get([i]).controls.descripcion.errors}"></textarea>
+                    <div *ngIf="submitted && this.expFormArray.get([i]).controls.descripcion.errors"
+                         class="invalid-feedback-c">
+                      <div *ngIf="this.expFormArray.get([i]).controls.descripcion.errors.required">
+                        Debe ingresar una descripción a la experiencia
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row my-3">
+        <div class="col-12 text-center">
+          <button type="button" class="btn btn-primary" (click)="agregarExperiencia()">
+            <img src="assets/img/agregar-white.svg">
+            Agregar otra Experiencia
+          </button>
+        </div>
+      </div>
+      <div class="row my-5">
+        <div class="col-12 text-right">
+          <button type="submit" class="btn btn-primary">
+            <img src="assets/img/check.svg">
+            Guardar Evento
+          </button>
+          <button type="button" class="btn btn-default ml-2" (click)="volver()">
+            <img src="assets/img/cancelar.svg">
+            Volver
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+</main>
+
+<app-footer></app-footer>

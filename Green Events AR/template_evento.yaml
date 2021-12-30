@@ -1,0 +1,266 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "Stack de creación de eventos AR"
+
+Parameters:
+  Codigo:
+    Type: "String"
+    Description: "Codigo del evento"
+    AllowedPattern: "^[a-z][a-z0-9-]*$"
+    MinLength: "1"
+    MaxLength: "50"
+  Stage:
+    Description: "Ambiente instalacion"
+    Type: "String"
+    Default: "dev"
+    AllowedValues:
+      - "dev"
+      - "qa"
+      - "prod"
+    ConstraintDescription: "Especifique entre desarrollo (dev), qa o produccion (prod)"
+  Dominio:
+    Type: "String"
+    Description: "Dominio del sistema."
+    MinLength: "1"
+    MaxLength: "30"
+  SubDominio:
+    Type: "String"
+    Description: "Sub dominio del sistema."
+    MinLength: "1"
+    MaxLength: "30"
+  Token:
+    Type: "String"
+    Description: "Token del evento."
+  ArnCertificado:
+    Type: "String"
+    Description: "ARN de certificado"
+  ArnCodeBuildRole:
+    Type: "String"
+    Description: "ARN rol para CodeBuild"
+  ArnCodePipelineRol:
+    Type: "String"
+    Description: "ARN rol para CodePipeline"
+  NombreBucketServicios:
+    Type: "String"
+    Description: "Nombre del bucket de servicios"
+  Repositorio:
+    Type: "String"
+    Description: "Repositorio CodeCommit"
+  Branch:
+    Type: "String"
+    Description: "Branch CodeCommit"
+  RegionOrigen:
+    Type: "String"
+    Description: "Region donde se encuentra la instalacion principal"
+  GitHubOAuthToken:
+    Type: String
+    NoEcho: true
+    MinLength: 40
+    MaxLength: 40
+    AllowedPattern: '[a-z0-9]*'
+  GitHubOwner:
+    Type: String
+    Default: "Catena-Ingenieria"
+    AllowedPattern: "[A-Za-z0-9-]+"
+  GitHubRepo:
+    Type: String
+    Default: "green-events-ar"
+    AllowedPattern: "[A-Za-z0-9-]+"
+  GitHubBranch:
+    Type: String
+    Default: "develop"
+    AllowedPattern: "[A-Za-z0-9-]+"
+  ApiKey:
+    Type: String
+
+Metadata:
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+      - Label:
+          default: General
+        Parameters:
+          - Codigo
+          - Stage
+          - NombreBucketServicios
+          - ArnCertificado
+          - ArnCodeBuildRole
+          - ArnCodePipelineRol
+          - ApiKey
+      - Label:
+          default: Dominios
+        Parameters:
+          - Dominio
+          - SubDominio
+      - Label:
+          default: Welcu
+        Parameters:
+          - Token
+      - Label:
+          default: GitHub
+        Parameters:
+          - GitHubOAuthToken
+          - GitHubOwner
+          - GitHubRepo
+          - GitHubBranch
+
+Resources:
+  SecretEvent:
+    Type: AWS::SecretsManager::Secret
+    DeletionPolicy: Delete
+    Properties:
+      Description: "Secreto que contiene token del evento Welcu"
+      Name: !Sub ${Codigo}-${Stage}-token
+      SecretString: !Ref Token
+  SiteBucket:
+    Type: "AWS::S3::Bucket"
+    DeletionPolicy: "Delete"
+    Properties:
+      BucketName: !Sub ${Codigo}-${Stage}
+      WebsiteConfiguration:
+        IndexDocument: "index.html"
+        ErrorDocument: "index.html"
+  Distribution:
+    Type: "AWS::CloudFront::Distribution"
+    DeletionPolicy: "Delete"
+    DependsOn:
+      - SiteBucket
+    Properties:
+      DistributionConfig:
+        Aliases:
+          - !Sub ${SubDominio}.${Dominio}
+        HttpVersion: http2
+        Origins:
+          - DomainName: !Select [ 2, !Split [ "/", !GetAtt SiteBucket.WebsiteURL ] ]
+            Id: S3Origin
+            CustomOriginConfig:
+              HTTPPort: 80
+              HTTPSPort: 443
+              OriginProtocolPolicy: http-only
+        Enabled: true
+        DefaultRootObject: index.html
+        DefaultCacheBehavior:
+          AllowedMethods:
+            - GET
+            - HEAD
+          Compress: true
+          TargetOriginId: S3Origin
+          ForwardedValues:
+            QueryString: true
+            Cookies:
+              Forward: none
+          ViewerProtocolPolicy: redirect-to-https
+        ViewerCertificate:
+          AcmCertificateArn: !Ref ArnCertificado
+          MinimumProtocolVersion: TLSv1.1_2016
+          SslSupportMethod: sni-only
+  RecordSet:
+    Type: AWS::Route53::RecordSet
+    DeletionPolicy: Delete
+    DependsOn:
+      - Distribution
+    Properties:
+      AliasTarget:
+        DNSName: !GetAtt Distribution.DomainName
+        EvaluateTargetHealth: false
+        HostedZoneId: "Z2FDTNDATAQYW2"
+      Name: !Sub ${SubDominio}.${Dominio}.
+      Type: A
+      HostedZoneName: !Sub ${Dominio}.
+  SiteDeploy:
+    Type: AWS::CodeBuild::Project
+    DeletionPolicy: Delete
+    Properties:
+      Name: !Sub ${Codigo}-build
+      Description: "Deploy de landing page de evento"
+      ServiceRole: !Ref ArnCodeBuildRole
+      Artifacts:
+        Type: CODEPIPELINE
+      Environment:
+        Type: LINUX_CONTAINER
+        ComputeType: BUILD_GENERAL1_SMALL
+        Image: aws/codebuild/standard:4.0
+        EnvironmentVariables:
+          - Name: CODIGO
+            Type: PLAINTEXT
+            Value: !Ref Codigo
+          - Name: STAGE
+            Type: PLAINTEXT
+            Value: !Ref Stage
+          - Name: BUCKET
+            Type: PLAINTEXT
+            Value: !Sub ${Codigo}-${Stage}
+          - Name: BUCKET_SERVICIOS
+            Type: PLAINTEXT
+            Value: !Ref NombreBucketServicios
+          - Name: DOMINIO_SITIO
+            Type: PLAINTEXT
+            Value: !Sub https://${SubDominio}.${Dominio}
+          - Name: DISTRIBUTION_ID
+            Type: PLAINTEXT
+            Value: !Ref Distribution
+          - Name: REGION_ORIGEN
+            Type: PLAINTEXT
+            Value: !Ref RegionOrigen
+          - Name: API_KEY
+            Type: PLAINTEXT
+            Value: !Ref ApiKey
+      Source:
+        Type: CODEPIPELINE
+        BuildSpec: !Sub codebuild/buildspec.yaml
+      TimeoutInMinutes: 30
+  Pipeline:
+    Type: AWS::CodePipeline::Pipeline
+    DeletionPolicy: "Delete"
+    Properties:
+      Name: !Sub ${Codigo}-${Stage}-pipe
+      RoleArn: !Ref ArnCodePipelineRol
+      ArtifactStore:
+        Type: S3
+        Location: !Ref NombreBucketServicios
+      Stages:
+        - Name: Fuentes
+          Actions:
+            - Name: Fuentes
+              ActionTypeId:
+                Category: Source
+                Owner: ThirdParty
+                Version: 1
+                Provider: GitHub
+              InputArtifacts: [ ]
+              OutputArtifacts:
+                - Name: SourceArtifacts
+              Configuration:
+                Owner: !Ref GitHubOwner
+                Repo: !Ref GitHubRepo
+                Branch: !Ref GitHubBranch
+                PollForSourceChanges: false
+                OAuthToken: !Ref GitHubOAuthToken
+              RunOrder: 1
+        - Name: Deploy
+          Actions:
+            - Name: Deploy
+              ActionTypeId:
+                Category: Build
+                Owner: AWS
+                Version: '1'
+                Provider: CodeBuild
+              InputArtifacts:
+                - Name: SourceArtifacts
+              OutputArtifacts: [ ]
+              Configuration:
+                ProjectName: !Ref SiteDeploy
+              RunOrder: 2
+  Webhook:
+    Type: AWS::CodePipeline::Webhook
+    DependsOn:
+      - Pipeline
+    Properties:
+      Authentication: GITHUB_HMAC
+      AuthenticationConfiguration:
+        SecretToken: !Ref GitHubOAuthToken
+      RegisterWithThirdParty: 'true'
+      Filters:
+        - JsonPath: "$.ref"
+          MatchEquals: refs/heads/{Branch}
+      TargetPipeline: !Ref Pipeline
+      TargetAction: Fuentes
+      TargetPipelineVersion: !GetAtt Pipeline.Version

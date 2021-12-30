@@ -1,0 +1,33 @@
+{
+  "REGION": "us-east-1",
+  "VERSION": false,
+  "STAGE": "dev",
+
+  "BUCKET": "green-events-dev-servicios",
+
+  "ROLE_ARN": "arn:aws:iam::270973611177:role/green-events-dev-lambda-role",
+  "ROLE_ARN_CLOUDFORMATION": "arn:aws:iam::270973611177:role/Role-CloudFormation",
+
+  "URL_WELCU": "https://api.welcu.com/v1/event/attendees/code",
+  "URL_WELCU_LIST": "https://api.welcu.com/v1/event/attendees/checked.json",
+
+  "USER_POOL_ID": "us-east-1_EoNp6tql4",
+  "USER_POOL_ARN": "arn:aws:cognito-idp:us-east-1:270973611177:userpool/us-east-1_EoNp6tql4",
+  "CLIENT_ID": "2css003du9vc46el8jeqpr27m1",
+
+  "TABLA_EVENTOS": "green-events-dev-eventos",
+
+  "DOMAIN_NAME": "ge-api.catena.cl",
+  "CERTIFICATE_ARN": "arn:aws:acm:us-east-1:270973611177:certificate/b75c6f2e-fd3e-4fed-8b42-bdda15fa34af",
+
+  "CF_DOMINIO": "catena.cl",
+  "CF_ROL_CODEBUILD": "arn:aws:iam::270973611177:role/green-events-dev-codebuild-role",
+  "CF_ROL_PIPELINE": "arn:aws:iam::270973611177:role/green-events-dev-pipeline-role",
+  "CF_REPOSITORIO": "GREENEVENTS_AR",
+  "CF_BRANCH": "develop",
+
+  "URL_TEMPLATE": "https://green-events-dev-servicios.s3.amazonaws.com/template/template_evento.yaml",
+
+  "SECRET_GITHUB": "green-events-dev-github"
+
+}

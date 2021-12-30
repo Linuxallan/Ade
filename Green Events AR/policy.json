@@ -1,0 +1,25 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "20201009",
+            "Effect": "Allow",
+            "Action": [
+                "acm:*",
+                "apigateway:*",
+                "cloudfront:*",
+                "codebuild:*",
+                "codepipeline:*",
+                "cognito-identity:*",
+                "cognito-idp:*",
+                "cognito-sync:*",
+                "dynamodb:*",
+                "iam:*",
+                "route53:*",
+                "secretsmanager:*",
+                "s3:*"
+            ],
+            "Resource": "*"
+        }
+    ]
+}

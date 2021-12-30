@@ -1,0 +1,238 @@
+<app-header [tab]="'usuarios'"></app-header>
+
+<main>
+  <div class="container">
+
+    <!--    <div class="row">-->
+
+    <!--      <div class="col-12 ml-n2 mt-n3">-->
+    <!--        <nav aria-label="breadcrumb">-->
+    <!--          <ol class="breadcrumb">-->
+    <!--            &lt;!&ndash;<li class="breadcrumb-item  ml-n2"><a href="#">Listado de Eventos</a></li>&ndash;&gt;-->
+    <!--            <li class="breadcrumb-item active ml-n2" aria-current="page">Usuarios</li>-->
+    <!--          </ol>-->
+    <!--        </nav>-->
+    <!--      </div>-->
+    <!--      <div class="col-12 mt-n2">-->
+    <!--        <h1 class="texto-color-2">Usuarios</h1>-->
+    <!--      </div>-->
+    <!--      <div class="col-12 mt-3 mb-n2">-->
+    <!--        <h3 class="texto-color-2 font-weight-bold">Buscar Usuarios</h3>-->
+    <!--      </div>-->
+    <!--      <div class="col-12 col-md-6 col-lg-4">-->
+    <!--        <label>Nombre de Usuario o Correo:</label>-->
+    <!--        <input type="text" class="form-control" placeholder="Ingresa texto para buscar">-->
+    <!--      </div>-->
+    <!--      <div class="col-12 col-md-4">-->
+    <!--        <a href="#" class="btn btn-primary" style="margin-top: 30px;">-->
+    <!--          <img src="assets/img/busca.svg">-->
+    <!--          Buscar-->
+    <!--        </a>-->
+    <!--      </div>-->
+    <!--    </div>-->
+
+    <div class="row mt-5">
+      <div class="col-12 col-md-6 pt-2">
+        <h3 class="texto-color-2 font-weight-bold">Listado de Usuarios</h3>
+      </div>
+      <div class="col-12 col-md-6 text-right mb-1">
+        <a href="#" data-toggle="modal" data-target="#agregar" class="btn btn-primary" (click)="abrirModal('crear')">
+          <img src="assets/img/agregar-white.svg">
+          Agregar Usuario
+        </a>
+      </div>
+
+      <div class="col-12 table-responsive pt-2">
+        <table class="table">
+          <thead>
+          <tr>
+            <th>Usuario</th>
+            <th>Nombre</th>
+            <th>Correo Electrónico</th>
+            <th>Opciones</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let u of usuarios; index as i">
+            <td>{{u.usuario}}</td>
+            <td>{{u.nombre}}</td>
+            <td>{{u.email}}</td>
+            <td>
+              <a class="mr-2" (click)="abrirModal('editar', u)">
+                <img src="assets/img/editar-verde.svg" data-toggle="tooltip" title="Editar Usuario">
+              </a>
+              <a (click)="abrirModal('eliminar', u)">
+                <img src="assets/img/eliminar-verde.svg" data-toggle="tooltip" title="Eliminar Usuario">
+              </a>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<app-footer></app-footer>
+
+<ng-template #modalCrearUsuario let-c="close" let-d="dismiss">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 class="modal-title texto-color-2 font-weight-bold" id="exampleModalLabel">Crear Usuario</h2>
+      <button type="button" class="close" aria-label="Close" (click)="cerrarModal()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body mt-n3">
+      <form #formCrear="ngForm" (ngSubmit)="guardar()" autocomplete="off">
+        <div class="row">
+          <div class="col-12 form-group">
+            <label>Usuario:</label>
+            <input required type="text" class="form-control" placeholder="Ingresa el usuario"
+                   [(ngModel)]="usuario.usuario" name="usuario" #usuarioInput="ngModel">
+            <ng-container *ngIf="usuarioInput.invalid && (usuarioInput.dirty || usuarioInput.touched)">
+                    <span class="form-error" *ngIf="formCrear.hasError('required', 'usuario')">
+                        Debes ingresar usuario.
+                    </span>
+            </ng-container>
+          </div>
+          <div class="col-12 form-group">
+            <label>Nombre:</label>
+            <input required type="text" class="form-control" placeholder="Ingresa el nombre"
+                   [(ngModel)]="usuario.nombre" name="nombre" #nombreInput="ngModel">
+            <ng-container *ngIf="nombreInput.invalid && (nombreInput.dirty || nombreInput.touched)">
+                    <span class="form-error" *ngIf="formCrear.hasError('required', 'nombre')">
+                        Debes ingresar nombre.
+                    </span>
+            </ng-container>
+          </div>
+          <div class="col-12 form-group">
+            <label>Correo Electrónico:</label>
+            <input required email type="text" class="form-control" placeholder="nombre@mail.com"
+                   [(ngModel)]="usuario.email"
+                   name="email" #emailInput="ngModel">
+            <ng-container *ngIf="emailInput.invalid && (emailInput.dirty || emailInput.touched)">
+                    <span class="form-error" *ngIf="formCrear.hasError('required', 'email')">
+                        Debes ingresar email.
+                    </span>
+              <span class="form-error" *ngIf="formCrear.hasError('email', 'email')">
+                        Email no válido.
+                    </span>
+            </ng-container>
+          </div>
+          <div class="col-12 form-group">
+            <label>Contraseña:</label>
+            <input required minlength="6" type="password" class="form-control"
+                   placeholder="******"
+                   [(ngModel)]="usuario.clave"
+                   name="clave" #claveInput="ngModel">
+            <ng-container *ngIf="claveInput.invalid && (claveInput.dirty || claveInput.touched)">
+                    <span class="form-error" *ngIf="formCrear.hasError('required', 'clave')">
+                        Debes ingresar la contraseña.
+                    </span>
+              <span class="form-error" *ngIf="formCrear.hasError('minlength', 'clave')">
+                        La contraseña debe ser de al menos 6 caracteres.
+                    </span>
+            </ng-container>
+          </div>
+          <div class="col-12 mt-3 text-center">
+            <button type="submit" id="loginButton" class="btn btn-primary mr-2" [disabled]="formCrear.invalid">Crear
+            </button>
+            <button type="button" id="closeButton" class="btn btn-default" (click)="cerrarModal()">Cancelar</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #modalEditarUsuario let-c="close" let-d="dismiss">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 class="modal-title texto-color-2 font-weight-bold" id="exampleModalLabel2">Editar Usuario</h2>
+      <button type="button" class="close" aria-label="Close" (click)="cerrarModal()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body mt-n3">
+      <form #formCrear="ngForm" (ngSubmit)="actualizar()" autocomplete="off">
+        <div class="row">
+          <div class="col-12 form-group">
+            <label>Usuario:</label>
+            <input required type="text" class="form-control" placeholder="Ingresa el usuario"
+                   [(ngModel)]="usuario.usuario" name="usuario" #usuarioInput="ngModel" disabled>
+          </div>
+          <div class="col-12 form-group">
+            <label>Nombre:</label>
+            <input required type="text" class="form-control" placeholder="Ingresa el nombre"
+                   [(ngModel)]="usuario.nombre" name="nombre" #nombreInput="ngModel">
+            <ng-container *ngIf="nombreInput.invalid && (nombreInput.dirty || nombreInput.touched)">
+                    <span class="form-error" *ngIf="formCrear.hasError('required', 'nombre')">
+                        Debes ingresar nombre.
+                    </span>
+            </ng-container>
+          </div>
+          <div class="col-12 form-group">
+            <label>Correo Electrónico:</label>
+            <input required email type="text" class="form-control" placeholder="nombre@mail.com"
+                   [(ngModel)]="usuario.email"
+                   name="email" #emailInput="ngModel">
+            <ng-container *ngIf="emailInput.invalid && (emailInput.dirty || emailInput.touched)">
+                    <span class="form-error" *ngIf="formCrear.hasError('required', 'email')">
+                        Debes ingresar email.
+                    </span>
+              <span class="form-error" *ngIf="formCrear.hasError('email', 'email')">
+                        Email no válido.
+                    </span>
+            </ng-container>
+          </div>
+          <div class="col-12 form-group">
+            <label>Contraseña:</label>
+            <input minlength="6" type="password" class="form-control"
+                   placeholder="******"
+                   [(ngModel)]="usuario.clave"
+                   name="clave" #claveInput="ngModel">
+            <ng-container *ngIf="claveInput.invalid && (claveInput.dirty || claveInput.touched)">
+              <span class="form-error" *ngIf="formCrear.hasError('minlength', 'clave')">
+                        La contraseña debe ser de al menos 6 caracteres.
+                    </span>
+            </ng-container>
+          </div>
+          <div class="col-12 mt-3 text-center">
+            <button type="submit" id="actualizarButton" class="btn btn-primary mr-2" [disabled]="formCrear.invalid">
+              Actualizar
+            </button>
+            <button type="button" id="closeActualizar" class="btn btn-default" (click)="cerrarModal()">Cancelar</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #modalConfirmarEliminar let-c="close" let-d="dismiss">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 class="modal-title texto-color-2 font-weight-bold" id="exampleModalLabel3">Eliminar Usuario</h2>
+      <button type="button" class="close" aria-label="Close" (click)="cerrarModal()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body mt-n3">
+      <div class="row">
+        <div class="col-12">
+          <p>
+            ¿Esta seguro de eliminar el usuario [{{usuario.usuario}}]?
+          </p>
+        </div>
+        <div class="col-12 mt-3 text-center">
+          <button type="button" id="confirmarEliminar" class="btn btn-primary mr-2 " (click)="eliminarUsuario()">Confirmar
+          </button>
+          <button type="button" id="closeConfirmar" class="btn btn-default" (click)="cerrarModal()">Cancelar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

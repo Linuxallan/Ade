@@ -1,0 +1,130 @@
+<app-header [tab]="'eventos'"></app-header>
+
+<main>
+  <div class="container">
+
+    <div class="row">
+
+      <div class="col-12 ml-n2 mt-n3">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <!--<li class="breadcrumb-item  ml-n2"><a href="#">Listado de Eventos</a></li>-->
+            <li class="breadcrumb-item active ml-n2" aria-current="page">Eventos</li>
+          </ol>
+        </nav>
+      </div>
+      <div class="col-12 mt-n2">
+        <h1 class="texto-color-2">Eventos</h1>
+      </div>
+      <!--<div class="col-12 mt-3 mb-n2">
+        <h3 class="texto-color-2 font-weight-bold">Buscar Eventos</h3>
+      </div>
+      <div class="col-12 col-md-3">
+        <label>Título Evento:</label>
+        <input type="text" class="form-control" placeholder="Ingresa texto para buscar">
+      </div>
+      <div class="col-12 col-md-3">
+        <label>Fecha creación:</label>
+        <input type="date" class="form-control">
+      </div>
+      <div class="col-12 col-md-3">
+        <label>Estado:</label>
+        <select class="form-control">
+          <option>Todos</option>
+          <option>En progreso</option>
+          <option>Creados</option>
+        </select>
+      </div>
+      <div class="col-12 col-md-3">
+        <a href="#" class="btn btn-primary" style="margin-top: 30px;">
+          <img src="assets/img/busca.svg">
+          Buscar
+        </a>
+      </div>-->
+    </div>
+
+    <div class="row mt-5">
+      <div class="col-12 col-md-6 pt-2">
+        <h3 class="texto-color-2 font-weight-bold">Listado de Eventos</h3>
+      </div>
+      <div class="col-12 col-md-6 text-right mb-1">
+        <a [routerLink]="['/evento']" class="btn btn-primary">
+          <img src="assets/img/agregar-white.svg">
+          Agregar Evento
+        </a>
+      </div>
+
+      <div class="col-12 table-responsive pt-2">
+        <table class="table">
+          <thead>
+          <tr>
+            <th>Título</th>
+            <th>Fecha Creación</th>
+            <th>Estado</th>
+            <th>Opciones</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let evn of eventos">
+            <td>{{evn.titulo}}</td>
+            <td>{{evn.fecha}}</td>
+            <td>
+              <div class="mr-1" style="color: #22aa86;" *ngIf="evn.estado === 'Publicado'">{{evn.estado}}</div>
+              <div class="mr-1" style="color: #007bff;"
+                   *ngIf="evn.estado === 'Actualizando' || evn.estado === 'En progreso'">{{evn.estado}}&nbsp;
+                <div class="spinner-grow spinner-grow-sm text-primary"></div>
+              </div>
+              <div class="mr-1" *ngIf="evn.estado === 'Finalizado'">{{evn.estado}}</div>
+              <div class="mr-1" style="color: red;" *ngIf="evn.estado === 'Error'">{{evn.estado}}</div>
+            </td>
+            <td>
+              <a class="mr-3" (click)="abrirEditar(evn)" *ngIf="evn.estado === 'Publicado'">
+                <img src="assets/img/editar-verde.svg" data-toggle="tooltip" title="Editar Evento">
+              </a>
+
+              <img src="assets/img/editar-verde.svg" class="mr-3" *ngIf="evn.estado !== 'Publicado'"
+                   style="filter: grayscale(100%);" data-toggle="tooltip" title="Editar Evento">
+
+              <a (click)="abrirConfirmar(evn)" *ngIf="evn.estado === 'Publicado'">
+                <img src="assets/img/eliminar-verde.svg" data-toggle="tooltip" title="Eliminar Evento">
+              </a>
+
+              <img src="assets/img/eliminar-verde.svg" class="mr-3" *ngIf="evn.estado !== 'Publicado'"
+                   style="filter: grayscale(100%);" data-toggle="tooltip" title="Eliminar Evento">
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<app-footer></app-footer>
+
+<ng-template #modalConfirmarEliminar let-c="close" let-d="dismiss">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 class="modal-title texto-color-2 font-weight-bold" id="exampleModalLabel3">Terminar Evento</h2>
+      <button type="button" class="close" aria-label="Close" (click)="cerrarModal()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body mt-n3">
+      <div class="row">
+        <div class="col-12">
+          <p>
+            ¿Esta seguro de terminar el evento [{{evento.titulo}}]?
+          </p>
+        </div>
+        <div class="col-12 mt-3 text-center">
+          <button type="button" id="confirmarEliminar" class="btn btn-primary mr-2 " (click)="eliminarEvento()">
+            Confirmar
+          </button>
+          <button type="button" id="closeConfirmar" class="btn btn-default" (click)="cerrarModal()">Cancelar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

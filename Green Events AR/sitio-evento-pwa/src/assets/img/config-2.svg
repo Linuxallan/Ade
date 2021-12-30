@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="146" height="84" viewBox="0 0 146 84">
+  <g id="Grupo_1179" data-name="Grupo 1179" transform="translate(-4301 7895)">
+    <g id="Rectángulo_195" data-name="Rectángulo 195" transform="translate(4301 -7895)" fill="#95a6fa" stroke="#333" stroke-width="1">
+      <rect width="90" height="84" stroke="none"/>
+      <rect x="0.5" y="0.5" width="89" height="83" fill="none"/>
+    </g>
+    <g id="Rectángulo_196" data-name="Rectángulo 196" transform="translate(4390 -7895)" fill="#ffd072" stroke="#333" stroke-width="1">
+      <rect width="57" height="42" stroke="none"/>
+      <rect x="0.5" y="0.5" width="56" height="41" fill="none"/>
+    </g>
+    <g id="Grupo_925" data-name="Grupo 925" transform="translate(4332 -7865)">
+      <g id="Grupo_921" data-name="Grupo 921" transform="translate(0)">
+        <path id="Trazado_198" data-name="Trazado 198" d="M15.8,0H0V28.91H24.158V10.361" transform="translate(28.91) rotate(90)" fill="none" stroke="#5909ac" stroke-linecap="round" stroke-width="2"/>
+      </g>
+      <g id="Rectángulo_200" data-name="Rectángulo 200" transform="translate(5.576 4.925)" fill="none" stroke="#5909ac" stroke-width="2">
+        <rect width="18" height="14" stroke="none"/>
+        <rect x="1" y="1" width="16" height="12" fill="none"/>
+      </g>
+    </g>
+    <g id="Grupo_1175" data-name="Grupo 1175" transform="translate(4390 -7855)">
+      <g id="Rectángulo_197" data-name="Rectángulo 197" fill="#fd7e7e" stroke="#333" stroke-width="1">
+        <rect width="57" height="44" stroke="none"/>
+        <rect x="0.5" y="0.5" width="56" height="43" fill="none"/>
+      </g>
+      <g id="Elipse_45" data-name="Elipse 45" transform="translate(34.033 14.321) rotate(90)" fill="none" stroke="#5909ac" stroke-width="2">
+        <ellipse cx="6" cy="5.5" rx="6" ry="5.5" stroke="none"/>
+        <ellipse cx="6" cy="5.5" rx="5" ry="4.5" fill="none"/>
+      </g>
+      <path id="Trazado_213" data-name="Trazado 213" d="M15.415,0H0V21.212H23.576L23.9,3.449" transform="translate(38.867 10) rotate(90)" fill="none" stroke="#5909ac" stroke-linecap="round" stroke-width="2"/>
+      <path id="Trazado_214" data-name="Trazado 214" d="M-4322.187,5690s.936-3.375,6.712-3.375,6.413,3.125,6.7,3.9a7.922,7.922,0,0,1,.35,1.9" transform="translate(4343.753 -5659.662)" fill="none" stroke="#5909ac" stroke-linecap="round" stroke-width="2"/>
+    </g>
+    <g id="Grupo_1178" data-name="Grupo 1178" transform="translate(4102.577 -10252.075)">
+      <path id="Trazado_198-2" data-name="Trazado 198" d="M1025.257,5802.2H1011v24h23.334v-13.4" transform="translate(6128.624 1354.075) rotate(90)" fill="none" stroke="#5909ac" stroke-linecap="round" stroke-width="2"/>
+      <path id="Trazado_212" data-name="Trazado 212" d="M0,14.106V0" transform="translate(320.56 2383.472) rotate(135)" fill="none" stroke="#5909ac" stroke-linecap="round" stroke-width="2"/>
+      <g id="Elipse_43" data-name="Elipse 43" transform="translate(321.603 2380.286) rotate(30)" fill="none" stroke="#5909ac" stroke-width="2">
+        <ellipse cx="4.5" cy="4" rx="4.5" ry="4" stroke="none"/>
+        <ellipse cx="4.5" cy="4" rx="3.5" ry="3" fill="none"/>
+      </g>
+    </g>
+  </g>
+</svg>

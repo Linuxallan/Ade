@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="27.973" height="27.639" viewBox="0 0 27.973 27.639">
+  <g id="Grupo_920" data-name="Grupo 920" transform="translate(-301.424 -2364.075)">
+    <path id="Trazado_198" data-name="Trazado 198" d="M1025.125,5802.2H1011v21.212h21.6V5809.8" transform="translate(6125.836 1354.075) rotate(90)" fill="none" stroke="#5909ac" stroke-linecap="round" stroke-width="2"/>
+    <path id="Trazado_212" data-name="Trazado 212" d="M0,18.482V0" transform="translate(323.655 2386.567) rotate(135)" fill="none" stroke="#5909ac" stroke-linecap="round" stroke-width="2"/>
+    <g id="Elipse_43" data-name="Elipse 43" transform="translate(321.603 2380.286) rotate(30)" fill="#fff" stroke="#5909ac" stroke-width="2">
+      <ellipse cx="4.5" cy="4" rx="4.5" ry="4" stroke="none"/>
+      <ellipse cx="4.5" cy="4" rx="3.5" ry="3" fill="none"/>
+    </g>
+  </g>
+</svg>

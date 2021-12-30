@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="27.586" height="26.83" viewBox="0 0 27.586 26.83">
+  <g id="Grupo_264" data-name="Grupo 264" transform="translate(-1081.088 -61.982)">
+    <g id="Grupo_1" data-name="Grupo 1" transform="translate(1102.192 86.938) rotate(180)">
+      <g id="Grupo_8" data-name="Grupo 8" transform="translate(1.184 -0.875)">
+        <g id="Grupo_7" data-name="Grupo 7" transform="translate(0)">
+          <g id="Grupo_265" data-name="Grupo 265">
+            <path id="Trazado_2" data-name="Trazado 2" d="M11.849,24H0V0H18.008V17.006Z" fill="#fff" stroke="#00a55e" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+            <g id="Trazado_169" data-name="Trazado 169" transform="translate(8.688 20.17) rotate(-45)" fill="#fff" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M -2.453879594802856 5.043385982513428 L -0.7071096301078796 3.296606063842773 L 3.296600341796875 -0.7071139216423035 L 4.003710269927979 -1.414213895797729 L 4.710820198059082 -0.7071139216423035 L 8.587550163269043 3.169615983963013 L 10.25649070739746 4.838566303253174 L 7.896550178527832 4.876595973968506 L 0.01611035689711571 5.003586292266846 L -2.453879594802856 5.043385982513428 Z" stroke="none"/>
+              <path d="M 4.003710269927979 -3.814697265625e-06 L 4.76837158203125e-07 4.003715991973877 L 7.880440235137939 3.876726150512695 L 4.003710269927979 -3.814697265625e-06 M 4.003710269927979 -2.000003814697266 C 4.534140586853027 -2.000003814697266 5.042850494384766 -1.789293766021729 5.417920112609863 -1.414214134216309 L 9.294650077819824 2.462516069412231 C 9.862500190734863 3.030365943908691 10.03564071655273 3.882796049118042 9.734310150146484 4.627185821533203 C 9.43297004699707 5.371565818786621 8.715620040893555 5.863526344299316 7.912660121917725 5.876465797424316 L 0.03222036361694336 6.003456115722656 C 0.02143001556396484 6.0036301612854 0.01054525375366211 6.003717422485352 -0.0002179145812988281 6.003717422485352 C -0.8021268844604492 6.003717422485352 -1.52787971496582 5.524239540100098 -1.841529846191406 4.78394603729248 C -2.15939998626709 4.033716201782227 -1.990359306335449 3.165646076202393 -1.414219856262207 2.589506149291992 L 2.589490413665771 -1.414214134216309 C 2.96457052230835 -1.789293766021729 3.473280429840088 -2.000003814697266 4.003710269927979 -2.000003814697266 Z" stroke="none" fill="#00a55e"/>
+            </g>
+          </g>
+        </g>
+      </g>
+    </g>
+    <g id="Grupo_24" data-name="Grupo 24" transform="translate(1095.374 69.2)">
+      <g id="Elipse_2" data-name="Elipse 2" transform="translate(0.301 -0.387)" fill="#fff" stroke="#00a55e" stroke-width="2">
+        <ellipse cx="6.5" cy="7" rx="6.5" ry="7" stroke="none"/>
+        <ellipse cx="6.5" cy="7" rx="5.5" ry="6" fill="none"/>
+      </g>
+      <g id="Grupo_23" data-name="Grupo 23" transform="translate(3.801 3.613)">
+        <path id="Trazado_3" data-name="Trazado 3" d="M-603.333-48.667V-42.6" transform="translate(606.205 48.667)" fill="none" stroke="#00a55e" stroke-linecap="round" stroke-width="2"/>
+        <path id="Trazado_4" data-name="Trazado 4" d="M0,0V6.063" transform="translate(6.063 3.111) rotate(90)" fill="none" stroke="#00a55e" stroke-linecap="round" stroke-width="2"/>
+      </g>
+    </g>
+  </g>
+</svg>

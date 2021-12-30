@@ -1,0 +1,398 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Parameters:
+  Codigo:
+    Type: "String"
+    Description: "Codigo del evento"
+    AllowedPattern: "^[a-z][a-z0-9-]*$"
+    MinLength: "1"
+    MaxLength: "50"
+  Stage:
+    Description: 'Stage donde se realiza la instalacion'
+    Type: 'String'
+    Default: 'dev'
+    AllowedValues:
+      - dev
+      - qa
+      - prod
+    ConstraintDescription: 'Especifique entre desarrollo (dev), qa o produccion (prod)'
+  Dominio:
+    Type: "String"
+    Description: "Dominio del sistema."
+    MinLength: "1"
+    MaxLength: "30"
+  SubDominio:
+    Type: "String"
+    Description: "Sub dominio del sistema."
+    MinLength: "1"
+    MaxLength: "30"
+  SubDominioServicios:
+    Type: "String"
+    Description: "Sub dominio de servicios del sistema."
+    MinLength: "1"
+    MaxLength: "30"
+  HostedZone:
+    Type: "AWS::Route53::HostedZone::Id"
+    Description: "HostedZoneId de Route53"
+  GitHubOAuthToken:
+    Type: String
+    NoEcho: true
+    MinLength: 40
+    MaxLength: 40
+    AllowedPattern: '[a-z0-9]*'
+  GitHubOwner:
+    Type: String
+    Default: "Catena-Ingenieria"
+    AllowedPattern: "[A-Za-z0-9-]+"
+  GitHubRepo:
+    Type: String
+    Default: "green-events-ar"
+    AllowedPattern: "[A-Za-z0-9-]+"
+  GitHubBranch:
+    Type: String
+    Default: "develop"
+    AllowedPattern: "[A-Za-z0-9-]+"
+
+
+Metadata:
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+      - Label:
+          default: General
+        Parameters:
+          - Codigo
+          - Stage
+      - Label:
+          default: Dominios
+        Parameters:
+          - HostedZone
+          - Dominio
+          - SubDominio
+          - SubDominioServicios
+      - Label:
+          default: GitHub
+        Parameters:
+          - GitHubOAuthToken
+          - GitHubOwner
+          - GitHubRepo
+          - GitHubBranch
+
+Resources:
+  SecretGithub:
+    Type: AWS::SecretsManager::Secret
+    DeletionPolicy: Delete
+    Properties:
+      Description: "Secreto con datos de GitHub"
+      Name: !Sub ${Codigo}-${Stage}-github
+      SecretString: !Sub '{"GitHubOAuthToken": "${GitHubOAuthToken}", "GitHubOwner": "${GitHubOwner}", "GitHubRepo": "${GitHubRepo}", "GitHubBranch": "${GitHubBranch}"}'
+  LambdaFunctionRole:
+    Type: AWS::IAM::Role
+    DeletionPolicy: Delete
+    Properties:
+      RoleName: !Sub ${Codigo}-${Stage}-lambda-role
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Path: "/"
+      Policies:
+        - PolicyName: lambda-service
+          PolicyDocument:
+            Statement:
+              - Action:
+                  - codecommit:*
+                  - cognito-identity:*
+                  - cognito-idp:*
+                  - cognito-sync:*
+                  - dynamodb:*
+                  - execute-api:ManageConnections
+                  - lambda:*
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                  - s3:*
+                  - secretsmanager:*
+                  - ssm:GetParameters
+                  - states:*
+                  - cloudformation:*
+                  - iam:PassRole
+                  - codepipeline:*
+                Resource: "*"
+                Effect: Allow
+            Version: "2012-10-17"
+
+  CodeBuildRole:
+    Type: AWS::IAM::Role
+    DeletionPolicy: Delete
+    Properties:
+      RoleName: !Sub ${Codigo}-${Stage}-codebuild-role
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - codebuild.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Path: "/"
+      Policies:
+        - PolicyName: codebuild-service
+          PolicyDocument:
+            Statement:
+              - Effect: Allow
+                Action: "*"
+                Resource: "*"
+            Version: '2012-10-17'
+
+  CodePipelineRole:
+    Type: AWS::IAM::Role
+    DeletionPolicy: Delete
+    Properties:
+      RoleName: !Sub ${Codigo}-${Stage}-pipeline-role
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Service:
+                - "codepipeline.amazonaws.com"
+            Action:
+              - "sts:AssumeRole"
+      Path: "/"
+      Policies:
+        - PolicyName: "codepipeline-service"
+          PolicyDocument:
+            Statement:
+              - Action:
+                  - codebuild:*
+                  - codecommit:*
+                  - s3:*
+                  - cloudformation:*
+                  - iam:PassRole
+                  - sns:Publish
+                Resource: "*"
+                Effect: "Allow"
+            Version: "2012-10-17"
+
+  ServiceBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Delete
+    Properties:
+      BucketName: !Sub ${Codigo}-${Stage}-servicios
+      CorsConfiguration:
+        CorsRules:
+          - AllowedHeaders:
+              - "*"
+            AllowedMethods:
+              - GET
+              - PUT
+              - POST
+              - HEAD
+            AllowedOrigins:
+              - "*"
+
+  SiteBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Delete
+    Properties:
+      BucketName: !Sub ${Codigo}-${Stage}-sitio
+      WebsiteConfiguration:
+        IndexDocument: "index.html"
+        ErrorDocument: "index.html"
+
+  UserPool:
+    Type: AWS::Cognito::UserPool
+    DeletionPolicy: Delete
+    Properties:
+      UserPoolName: !Sub ${Codigo}-mantenedor
+      AutoVerifiedAttributes:
+        - email
+      AdminCreateUserConfig:
+        InviteMessageTemplate:
+          EmailMessage: 'Se ha creado el usuario: {username} y su clave temporal es: {####}'
+          EmailSubject: 'Clave temporal Corrector de Preguntas Abiertas'
+      MfaConfiguration: 'OFF'
+      Policies:
+        PasswordPolicy:
+          RequireLowercase: false
+          RequireSymbols: false
+          RequireNumbers: false
+          MinimumLength: 6
+          RequireUppercase: false
+
+  UserPoolClient:
+    Type: AWS::Cognito::UserPoolClient
+    DeletionPolicy: Delete
+    Properties:
+      ClientName: !Sub ${Codigo}-mantenedor-client
+      GenerateSecret: false
+      UserPoolId: !Ref UserPool
+      CallbackURLs:
+        - !Sub https://localhost/auth
+      LogoutURLs:
+        - !Sub https://localhost/login
+      SupportedIdentityProviders:
+        - COGNITO
+      AllowedOAuthFlows:
+        - implicit
+      AllowedOAuthFlowsUserPoolClient: true
+      AllowedOAuthScopes:
+        - email
+        - openid
+        - aws.cognito.signin.user.admin
+        - profile
+      ExplicitAuthFlows:
+        - ALLOW_CUSTOM_AUTH
+        - ALLOW_USER_SRP_AUTH
+        - ALLOW_REFRESH_TOKEN_AUTH
+
+  Certificate:
+    Type: AWS::CertificateManager::Certificate
+    DeletionPolicy: Delete
+    Properties:
+      DomainName:
+        !Join
+        - '.'
+        - - '*'
+          - !Ref Dominio
+      DomainValidationOptions:
+        - DomainName:
+            !Join
+            - '.'
+            - - '*'
+              - !Ref Dominio
+          HostedZoneId: !Ref HostedZone
+        - DomainName: !Sub ${SubDominio}.${Dominio}
+          HostedZoneId: !Ref HostedZone
+        - DomainName: !Sub ${SubDominioServicios}.${Dominio}
+          HostedZoneId: !Ref HostedZone
+      SubjectAlternativeNames:
+        - !Sub ${SubDominio}.${Dominio}
+        - !Sub ${SubDominioServicios}.${Dominio}
+      ValidationMethod: DNS
+
+  CustomDomainApiGateway:
+    Type: AWS::ApiGateway::DomainName
+    DeletionPolicy: Delete
+    DependsOn:
+      - Certificate
+    Properties:
+      DomainName: !Sub ${SubDominioServicios}.${Dominio}
+      EndpointConfiguration:
+        Types:
+          - REGIONAL
+      RegionalCertificateArn: !Ref Certificate
+      SecurityPolicy: "TLS_1_2"
+
+  Distribution:
+    Type: AWS::CloudFront::Distribution
+    DeletionPolicy: Delete
+    DependsOn:
+      - SiteBucket
+      - Certificate
+    Properties:
+      DistributionConfig:
+        Aliases:
+          - !Sub ${SubDominio}.${Dominio}
+        HttpVersion: http2
+        Origins:
+          - DomainName: !Select [ 2, !Split [ "/", !GetAtt SiteBucket.WebsiteURL ] ]
+            Id: S3Origin
+            CustomOriginConfig:
+              HTTPPort: 80
+              HTTPSPort: 443
+              OriginProtocolPolicy: http-only
+        Enabled: true
+        DefaultRootObject: index.html
+        DefaultCacheBehavior:
+          AllowedMethods:
+            - GET
+            - HEAD
+          Compress: true
+          TargetOriginId: S3Origin
+          ForwardedValues:
+            QueryString: true
+            Cookies:
+              Forward: none
+          ViewerProtocolPolicy: redirect-to-https
+        ViewerCertificate:
+          AcmCertificateArn: !Ref Certificate
+          MinimumProtocolVersion: TLSv1.1_2016
+          SslSupportMethod: sni-only
+
+  RecordSetSite:
+    Type: AWS::Route53::RecordSet
+    DeletionPolicy: Delete
+    DependsOn:
+      - Distribution
+    Properties:
+      AliasTarget:
+        DNSName: !GetAtt Distribution.DomainName
+        EvaluateTargetHealth: false
+        HostedZoneId: "Z2FDTNDATAQYW2"
+      Name: !Sub ${SubDominio}.${Dominio}.
+      Type: A
+      HostedZoneName: !Sub ${Dominio}.
+
+  RecordSetServices:
+    Type: AWS::Route53::RecordSet
+    DeletionPolicy: Delete
+    Properties:
+      AliasTarget:
+        DNSName: !GetAtt CustomDomainApiGateway.RegionalDomainName
+        EvaluateTargetHealth: false
+        HostedZoneId: "Z1UJRXOUMOOFQ8"
+      Name: !Sub ${SubDominioServicios}.${Dominio}.
+      Type: A
+      HostedZoneName: !Sub ${Dominio}.
+
+  TablaEvento:
+    Type: AWS::DynamoDB::Table
+    DeletionPolicy: Retain
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+        - AttributeName: fecha
+          AttributeType: S
+      BillingMode: PROVISIONED
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+        - AttributeName: fecha
+          KeyType: RANGE
+      ProvisionedThroughput:
+        ReadCapacityUnits: 3
+        WriteCapacityUnits: 1
+      TableName: !Sub ${Codigo}-${Stage}-eventos
+
+Outputs:
+  LambdaRolARN:
+    Description: "ARN de rol IAM para Lambda"
+    Value: !GetAtt LambdaFunctionRole.Arn
+  CodeBuildRolARN:
+    Description: "ARN de rol IAM para CodeBuild"
+    Value: !GetAtt CodeBuildRole.Arn
+  CodePipelineRolARN:
+    Description: "ARN de rol IAM para CodePipeline"
+    Value: !GetAtt CodePipelineRole.Arn
+  NombreBucketSitio:
+    Description: "Bucket del sitio"
+    Value: !Ref SiteBucket
+  NombreServiceBucket:
+    Description: "Bucket de servicios"
+    Value: !Ref ServiceBucket
+  CertificateARN:
+    Value: !Ref Certificate
+    Description: "ARN Certificado"
+  UserPoolId:
+    Description: "UserPool ID"
+    Value: !Ref UserPool
+  UserPoolArn:
+    Description: "UserPool Arn"
+    Value: !GetAtt UserPool.Arn
+  ClientId:
+    Description: "Client ID del UserPool"
+    Value: !Ref UserPoolClient

@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="26" height="24.026" viewBox="0 0 26 24.026">
+  <g id="Grupo_549" data-name="Grupo 549" transform="translate(-1264 -237.033)">
+    <g id="Rectángulo_65" data-name="Rectángulo 65" transform="translate(1264 239.059)" fill="#fff" stroke="#00a55e" stroke-width="1.5">
+      <rect width="26" height="22" rx="8" stroke="none"/>
+      <rect x="0.75" y="0.75" width="24.5" height="20.5" rx="7.25" fill="none"/>
+    </g>
+    <g id="Trazado_196" data-name="Trazado 196" transform="translate(1264 238.855)" fill="#fff">
+      <path d="M 24.75771141052246 5.809138298034668 L 0.7500395774841309 5.809138298034668 C 0.761406421661377 3.017456531524658 3.036045789718628 0.7499982118606567 5.830345630645752 0.7499982118606567 L 19.67740631103516 0.7499982118606567 C 22.47170639038086 0.7499982118606567 24.74634552001953 3.017456531524658 24.75771141052246 5.809138298034668 Z" stroke="none"/>
+      <path d="M 5.830345153808594 1.499998092651367 C 3.705787658691406 1.499998092651367 1.933635711669922 3.038094043731689 1.568769454956055 5.059138298034668 L 23.9389820098877 5.059138298034668 C 23.57411575317383 3.038094043731689 21.80196380615234 1.499998092651367 19.67740631103516 1.499998092651367 L 5.830345153808594 1.499998092651367 M 5.830345153808594 -1.9073486328125e-06 L 19.67740631103516 -1.9073486328125e-06 C 22.89741516113281 -1.9073486328125e-06 25.50775527954102 2.61033821105957 25.50775527954102 5.830338001251221 L 25.50775527954102 6.559138298034668 L -3.814697265625e-06 6.559138298034668 L -3.814697265625e-06 5.830338001251221 C -3.814697265625e-06 2.61033821105957 2.610336303710938 -1.9073486328125e-06 5.830345153808594 -1.9073486328125e-06 Z" stroke="none" fill="#00a55e"/>
+    </g>
+    <g id="Grupo_388" data-name="Grupo 388" transform="translate(1266.916 246.483)">
+      <g id="Grupo_392" data-name="Grupo 392" transform="translate(0)">
+        <g id="Rectángulo_68" data-name="Rectángulo 68" transform="translate(0.085 -0.424)" fill="#fff" stroke="#00a55e" stroke-width="1.5">
+          <rect width="5" height="6" stroke="none"/>
+          <rect x="0.75" y="0.75" width="3.5" height="4.5" fill="none"/>
+        </g>
+        <g id="Rectángulo_72" data-name="Rectángulo 72" transform="translate(7.085 -0.424)" fill="#fff" stroke="#00a55e" stroke-width="1.5">
+          <rect width="5" height="6" stroke="none"/>
+          <rect x="0.75" y="0.75" width="3.5" height="4.5" fill="none"/>
+        </g>
+        <g id="Rectángulo_73" data-name="Rectángulo 73" transform="translate(14.085 -0.424)" fill="#fff" stroke="#00a55e" stroke-width="1.5">
+          <rect width="6" height="6" stroke="none"/>
+          <rect x="0.75" y="0.75" width="4.5" height="4.5" fill="none"/>
+        </g>
+      </g>
+    </g>
+    <g id="Grupo_393" data-name="Grupo 393" transform="translate(1266.916 252.314)">
+      <g id="Grupo_392-2" data-name="Grupo 392" transform="translate(0)">
+        <g id="Rectángulo_68-2" data-name="Rectángulo 68" transform="translate(0.085 -0.254)" fill="#fff" stroke="#00a55e" stroke-width="1.5">
+          <rect width="5" height="5" stroke="none"/>
+          <rect x="0.75" y="0.75" width="3.5" height="3.5" fill="none"/>
+        </g>
+        <g id="Rectángulo_72-2" data-name="Rectángulo 72" transform="translate(7.085 -0.254)" fill="#fff" stroke="#00a55e" stroke-width="1.5">
+          <rect width="5" height="5" stroke="none"/>
+          <rect x="0.75" y="0.75" width="3.5" height="3.5" fill="none"/>
+        </g>
+        <g id="Rectángulo_73-2" data-name="Rectángulo 73" transform="translate(14.085 -0.254)" fill="#fff" stroke="#00a55e" stroke-width="1.5">
+          <rect width="6" height="5" stroke="none"/>
+          <rect x="0.75" y="0.75" width="4.5" height="3.5" fill="none"/>
+        </g>
+      </g>
+    </g>
+    <g id="Grupo_394" data-name="Grupo 394" transform="translate(1269.952 237.033)">
+      <path id="Trazado_193" data-name="Trazado 193" d="M1272.167,234.033v5.1" transform="translate(-1272.167 -234.033)" fill="none" stroke="#00a55e" stroke-width="1.5"/>
+      <path id="Trazado_194" data-name="Trazado 194" d="M1272.167,234.033v5.1" transform="translate(-1265.608 -234.033)" fill="none" stroke="#00a55e" stroke-width="1.5"/>
+      <path id="Trazado_195" data-name="Trazado 195" d="M1272.167,234.033v5.1" transform="translate(-1259.049 -234.033)" fill="none" stroke="#00a55e" stroke-width="1.5"/>
+    </g>
+  </g>
+</svg>

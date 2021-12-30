@@ -1,0 +1,470 @@
+html, *{
+	font-family: 'Open Sans', sans-serif;
+}
+body {
+	position: relative;
+	overflow-y: scroll;
+	scroll-behavior: smooth;
+	min-height:100vh;
+	padding-bottom:64px;
+}
+.text-blanco{
+	color:#fff!important;
+}
+.obligatorio, .error{
+	color:#FC7575;
+}
+.texto-verde{
+	color:#26f026;
+}
+h1{
+	font-size:1.3rem!important;
+}
+h2{
+	font-size:1.1rem!important;
+}
+h3{
+	font-size:0.9rem!important;
+}
+h4, .form-control, ::placeholder, label, p{
+	font-size:0.75rem!important;
+}
+h5{
+	font-size:0.5rem!important;
+}
+label{
+	color:#333333;
+}
+::placeholder{
+	color:#B0B0B0;
+}
+.icon-input{
+	margin:-30px 10px 0px 0px;
+	float:right;
+}
+
+/*TABLE*/
+thead{
+	background:#0174CD;
+	color:#fff;
+}
+
+
+
+/*HEADER*/
+.modal-header{
+	border-bottom:1px solid transparent!important;
+}
+
+
+/*BUTTONS*/
+.link-solo{
+	color:#0063AF;
+}
+/*.btn.btn-primary{*/
+/*	background:#4EA9EF!important;*/
+/*	color:#fff!important;*/
+/*}*/
+/*.btn.btn-primary:hover{*/
+/*	background:#0174CD!important;*/
+/*}*/
+.btn.btn-default{
+	background:#B3B3B3!important;
+	color:#fff!important;
+}
+.btn.btn-default:hover{
+	background:#9C9C9C!important;
+}
+.btn-corregir-nota{
+	width:70px;
+	max-width:70px;
+}
+
+
+
+
+/*PROGRESS BAR*/
+.progress-bar-lg{
+	height:35px!important;
+}
+.progress{
+	background-color:#c3c3c3!important;
+}
+
+/*NAVBAR*/
+/*
+.navbar-nav .nav-link:hover{
+padding:1.2rem 1rem;
+}
+*/
+/*nav.navbar{*/
+/*	background-color:#0063AF;*/
+/*}*/
+nav.navbar a{
+	color:#fff!important;
+}
+nav.navbar form a{
+	text-decoration: underline;
+}
+/*nav.navbar form a:hover{*/
+/*	font-weight:bold;*/
+/*}*/
+.navbar-nav .nav-link{
+	font-size:0.9rem!important;
+}
+.navbar-expand-md .navbar-nav .dropdown-menu{
+	background:#0063AF;
+}
+.dropdown-item:hover, .dropdown-item:focus{
+	background-color:#4EA9EF!important;
+}
+.datos-usuario-nav{
+	color:#fff!important;
+}
+.img-usuario-nav{
+	margin-left: -15px;
+	margin-top: 5px;
+	position: absolute;
+}
+.logo-nav img{
+	height:7rem;
+	width:auto;
+	position: absolute;
+}
+@media (min-width:768px){
+	.logo-nav img{
+		margin:-40px 0px 0px -20px;
+	}
+	.datos-usuario-nav{
+		font-size:12px;
+	}
+}
+@media (max-width:767px){
+	.logo-nav img{
+		margin:-53px 0px 0px -20px;
+	}
+	.datos-usuario-nav{
+		font-size:11px;
+	}
+}
+
+
+
+/*CHAT*/
+.icon-chat, .icon-send, .listado-personas, .listado-conversaciones, .fondo-login{
+	background: rgb(78,169,239);
+	background: linear-gradient(180deg, rgba(78,169,239,1) 0%, rgba(0,99,175,1) 100%);
+
+}
+.icon-chat, .icon-send{
+	border-radius:100px;
+	text-align:center;
+	display: block;
+	transition: background 0.5s ease;
+}
+.icon-chat{
+	padding:13px;
+	height:60px;
+	width:60px;
+	position:fixed;
+	bottom:10px;
+	right:10px;
+}
+.icon-chat img{
+	height:35px;
+	width:auto;
+}
+.icon-chat:hover,.icon-send:hover{
+	background: rgb(78,169,239);
+	background: linear-gradient(180deg, rgba(78,169,239,1) 0%, rgba(0,55,97,1) 100%);
+}
+.icon-send{
+	padding:3px 0;
+	height:35px;
+	width:35px;
+	position:relative;
+	margin-left:-3px;
+}
+.icon-send img{
+	height:20px;
+	width:auto;
+}
+.mostrar-chat{
+	display:block!important;
+	transition: all 0.5s ease;
+}
+.el-chat{
+	display:none;
+	height:500px;
+	width:500px;
+	position:sticky;
+	right:0px;
+	bottom:0px;
+	background:transparent;
+	transition: all 0.5s ease;
+	float:right;
+}
+.listado-personas, .listado-conversaciones{
+	display: block;
+	position:relative;
+	float:left;
+	height:500px;
+}
+.cerrar-close{
+	padding: 0rem .5rem;
+	background-color: transparent;
+	border: 0;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	color:#fff!important;
+	background:transparent;
+	font-size:1.5rem;
+	float:right;
+	margin-top:-30px;
+	margin-right: -12px;
+
+}
+.listado-personas{
+	width:280px;
+	margin-right:5px;
+}
+.listado-conversaciones{
+	width:215px;
+}
+.listado-conversaciones-inner{
+	overflow-y:scroll;
+	height:320px;
+
+}
+.listado-conversaciones-mensaje{
+	height:90px;
+	padding-top:5px;
+}
+.ingresar-mensaje{
+	background:#fff;
+	width:205px;
+	margin:0px 5px 3px 5px;
+	float:left;
+	height:50px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+}
+.ingresar-mensaje-left{
+	background:#fff;
+	width:155px;
+	float:left;
+	height:50px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+}
+.ingresar-mensaje-right{
+	background:#fff;
+	width:50px;
+	float:left;
+	height:50px;
+	-webkit-border-top-right-radius: 5px;
+	-webkit-border-bottom-right-radius: 5px;
+	-moz-border-radius-topright: 5px;
+	-moz-border-radius-bottomright: 5px;
+	border-top-right-radius: 5px;
+	border-bottom-right-radius: 5px;
+	border-left:1px solid #cdcdcd;
+	padding:10px;
+}
+.footer-mensaje{
+	height:40px;
+	width:205px;
+	background:transparent;
+	float:left;
+	position: relative;
+	margin:0px 5px;
+}
+.col-x3{
+	width:33.333%;
+	height:36px;
+	padding:3px 0;
+	float:left;
+	position: relative;
+	text-align:center;
+}
+.btn-chat-footer{
+	background:transparent;
+	color:#fff!important;
+}
+.btn-chat-footer:hover, .btn-chat-footer.active{
+	background:#4EA9EF;
+}
+
+.form-control-no-border{
+	border:1px solid transparent!important;
+}
+.form-control-no-border:focus{
+	box-shadow:none!important;
+
+}
+
+.mt-1-1{
+	margin-top:0.05rem!important;
+}
+
+.listado-personas-inner{
+	overflow-y:scroll;
+	height:398px;
+}
+.link-contacto{
+	width:100%;
+	padding: 1.4rem .5rem;
+	text-decoration: none!important;
+	transition: background 0.5s ease;
+}
+.chat-contacto{
+	width:100%;
+	padding: 1.4rem .5rem;
+	text-decoration: none!important;
+	transition: background 0.5s ease;
+}
+.chat-mensaje{
+	width: 150px;
+	padding:0.2rem .4rem;
+	text-decoration: none!important;
+	transition: all 0.5s ease;
+	min-height: 24px;
+	background: #cef8ff;
+	float: right;
+	border-radius: 5px;
+	margin-top: -30px;
+	margin-bottom:10px;
+}
+.chat-mensaje:hover{
+	background: #c0ebf3;
+}
+.chat-mensaje p{
+	font-size:.75rem;
+	color:#333333;
+	margin-bottom:0px!important;
+	white-space: initial;
+	overflow: hidden;
+	max-width: 95%;
+	text-align:justify;
+}
+.chat-mensaje-left{
+	float:left;
+	background:#FCFFB9!important;
+}
+.chat-mensaje-left:hover{
+	background:#F6EFA8!important;
+}
+.link-contacto:hover, .link-contacto.active{
+	background:#0174CD;
+}
+.inicial-contacto{
+	width: 2.5rem;
+	height: 2.5rem;
+	border-radius: 100px;
+	float: left;
+	margin-right: 10px;
+	margin-top: -12px;
+	padding: 0.15rem .5rem;
+	color: #fff;
+	font-weight: bold;
+	font-size: 1.5rem;
+	text-align:center;
+}
+.inicial-contacto-right{
+	margin-left:155px;
+}
+.color-inicial-usuario-conectado{
+	background: #4EA9EF;
+}
+.color-inicial-usuario-inactivo{
+	background: red;
+}
+.color-inicial-usuario-yo{
+	background: #efb64e;
+}
+
+
+.color-inicial-contacto-1{
+	background: blue;
+}
+.color-inicial-contacto-2{
+	background: pink;
+}
+.color-inicial-contacto-3{
+	background: green;
+}
+.inicial-contacto-sm{
+	width: 1.75rem;
+	height: 1.75rem;
+	border-radius: 100px;
+	float: left;
+	margin-right: 10px;
+	margin-top: 0px;
+	padding: 0.15rem .2rem;
+	color: #fff;
+	font-weight: bold;
+	font-size: 1rem;
+	text-align:center;
+}
+.nombre-contacto h5{
+font-size:11px!important;
+}
+.nombre-contacto{
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	color:#fff;
+	font-size: .75rem;
+	transition:.1s ease all;
+}
+.link-contacto:hover, .link-contacto.active{
+	font-weight:bold;
+}
+.no-underline:hover{
+	text-decoration: none!important;
+}
+#page-content {
+	flex: 1 0 auto;
+}
+
+#sticky-footer {
+	flex-shrink: none;
+	bottom: 0px;
+	margin-bottom: -23px;
+	position: absolute;
+	width: 100%;
+	color:#fff!important;
+}
+.badge.badge-primary{
+	background:#0063AF!important;
+	border-radius:1rem;
+	float:right;
+	font-size:.85rem;
+}
+.icon-md{
+	height:28px;
+	width:auto;
+}
+
+
+
+
+.bounce-in-right{-webkit-animation:bounce-in-right 1.1s both;animation:bounce-in-right 1.1s both}
+/* ----------------------------------------------
+ * Generated by Animista on 2020-1-23 15:22:31
+ * Licensed under FreeBSD License.
+ * See http://animista.net/license for more info.
+ * w: http://animista.net, t: @cssanimista
+ * ---------------------------------------------- */
+
+ @-webkit-keyframes bounce-in-right{0%{-webkit-transform:translateX(600px);transform:translateX(600px);-webkit-animation-timing-function:ease-in;animation-timing-function:ease-in;opacity:0}38%{-webkit-transform:translateX(0);transform:translateX(0);-webkit-animation-timing-function:ease-out;animation-timing-function:ease-out;opacity:1}55%{-webkit-transform:translateX(68px);transform:translateX(68px);-webkit-animation-timing-function:ease-in;animation-timing-function:ease-in}72%{-webkit-transform:translateX(0);transform:translateX(0);-webkit-animation-timing-function:ease-out;animation-timing-function:ease-out}81%{-webkit-transform:translateX(32px);transform:translateX(32px);-webkit-animation-timing-function:ease-in;animation-timing-function:ease-in}90%{-webkit-transform:translateX(0);transform:translateX(0);-webkit-animation-timing-function:ease-out;animation-timing-function:ease-out}95%{-webkit-transform:translateX(8px);transform:translateX(8px);-webkit-animation-timing-function:ease-in;animation-timing-function:ease-in}100%{-webkit-transform:translateX(0);transform:translateX(0);-webkit-animation-timing-function:ease-out;animation-timing-function:ease-out}}@keyframes bounce-in-right{0%{-webkit-transform:translateX(600px);transform:translateX(600px);-webkit-animation-timing-function:ease-in;animation-timing-function:ease-in;opacity:0}38%{-webkit-transform:translateX(0);transform:translateX(0);-webkit-animation-timing-function:ease-out;animation-timing-function:ease-out;opacity:1}55%{-webkit-transform:translateX(68px);transform:translateX(68px);-webkit-animation-timing-function:ease-in;animation-timing-function:ease-in}72%{-webkit-transform:translateX(0);transform:translateX(0);-webkit-animation-timing-function:ease-out;animation-timing-function:ease-out}81%{-webkit-transform:translateX(32px);transform:translateX(32px);-webkit-animation-timing-function:ease-in;animation-timing-function:ease-in}90%{-webkit-transform:translateX(0);transform:translateX(0);-webkit-animation-timing-function:ease-out;animation-timing-function:ease-out}95%{-webkit-transform:translateX(8px);transform:translateX(8px);-webkit-animation-timing-function:ease-in;animation-timing-function:ease-in}100%{-webkit-transform:translateX(0);transform:translateX(0);-webkit-animation-timing-function:ease-out;animation-timing-function:ease-out}}
+
+
+
+ .icono-estado-usuario{
+ 	height:15px;
+ 	width:auto;
+ }

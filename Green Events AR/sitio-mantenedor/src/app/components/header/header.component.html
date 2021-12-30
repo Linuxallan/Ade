@@ -1,0 +1,37 @@
+<nav class="navbar navbar-expand-md shadow-sm mb-3">
+  <a class="navbar-brand mt-n1 logo-nav texto-color" href="index.html">
+    <h2>Green Events</h2>
+  </a>
+  <div class="row d-block d-md-none">
+    <div class="col-12">
+        <span class="user-nav font-weight-bold">{{nombreUsuario}}
+          <a href="#"><img src="assets/img/salir.svg"></a>
+        </span>
+    </div>
+  </div>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"
+          style="margin-top:-44px;">
+    <span class="navbar-toggler-icon"><img src="assets/img/menu.svg"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent" style="color:#ccc!important;">
+    <ul class="navbar-nav mr-auto" style="background:#22aa86;">
+      <li class="nav-item" [class.active]="tab === 'eventos'">
+        <a class="nav-link" [routerLink]="['/eventos']">Eventos</a>
+      </li>
+      <li class="nav-item" [class.active]="tab === 'usuarios'">
+        <a class="nav-link" [routerLink]="['/usuarios']">Usuarios</a>
+      </li>
+    </ul>
+    <ul class="navbar-nav lr-auto d-md-block d-none" style="background:#22aa86;">
+      <li class="nav-item" data-toggle="tooltip" title="Salir">
+        <a class="nav-link user-nav" (click)="logout()">
+          {{nombreUsuario}}
+          <img src="assets/img/salir.svg" class="ml-2">
+        </a>
+      </li>
+
+    </ul>
+  </div>
+
+</nav>

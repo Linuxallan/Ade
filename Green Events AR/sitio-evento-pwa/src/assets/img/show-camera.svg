@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="22.64" height="22" viewBox="0 0 22.64 22">
+  <g id="Grupo_1065" data-name="Grupo 1065" transform="translate(-4051 -5396)">
+    <g id="Grupo_1060" data-name="Grupo 1060" transform="translate(-25 6.5)">
+      <path id="Trazado_244" data-name="Trazado 244" d="M3552.248,5751.222v2.273l3.694,5.658v-13.028Z" transform="translate(541.698 -352.625)" fill="#333" stroke="#333" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+    </g>
+    <g id="Trazado_251" data-name="Trazado 251" transform="translate(4052 5396)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M-1,0H17V22H-1Z" stroke="none"/>
+      <path d="M 1 2 L 1 20 L 15 20 L 15 2 L 1 2 M -1 0 L 17 0 L 17 22 L -1 22 L -1 0 Z" stroke="none" fill="#333"/>
+    </g>
+  </g>
+</svg>

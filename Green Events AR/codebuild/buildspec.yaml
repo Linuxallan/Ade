@@ -1,0 +1,22 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 12
+    commands:
+      - npm install -g @angular/cli@10.0.7 --silent
+      - cd sitio-evento-pwa && npm install --silent
+  pre_build:
+    commands:
+      - aws s3 cp --region $REGION_ORIGEN s3://$BUCKET_SERVICIOS/eventos/$CODIGO/cabecera.png src/assets/img/cabecera.png
+      - sed -i "s,{{evento}},$CODIGO,g" src/environments/environment.prod.ts
+      - sed -i "s,{{dominio}},$DOMINIO_SITIO,g" src/environments/environment.prod.ts
+  build:
+    commands:
+      - node --max_old_space_size=24576 ./node_modules/@angular/cli/bin/ng build --aot=true --source-map=false --prod --base-href=$DOMINIO_SITIO
+      - cd ../codebuild && chmod 511 cargarExperiencias.sh && ./cargarExperiencias.sh && cd ../sitio-evento-pwa
+      - aws s3 rm s3://$BUCKET --recursive
+      - aws s3 cp --recursive --acl public-read dist/sitio-evento-pwa s3://$BUCKET
+      - aws cloudfront create-invalidation --distribution-id $DISTRIBUTION_ID --paths /index.html /assets /experiencias
+      - aws lambda invoke --region $REGION_ORIGEN --function-name servicios-greenevents-ar-"$STAGE"-completarCreacion --payload '{"codigo":"'"$CODIGO"'"}' response.json

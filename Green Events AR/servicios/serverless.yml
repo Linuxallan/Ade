@@ -1,0 +1,335 @@
+service: servicios-greenevents-ar
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: ${opt:stage, 'dev'}
+  region: ${file(config.${self:provider.stage}.json):REGION}
+  versionFunctions: ${file(config.${self:provider.stage}.json):VERSION}
+  deploymentBucket: ${file(config.${self:provider.stage}.json):BUCKET}
+  role: ${file(config.${self:provider.stage}.json):ROLE_ARN}
+
+plugins:
+  - serverless-webpack
+  - serverless-domain-manager
+  - serverless-offline
+
+package:
+  individually: false
+  include:
+    - node_modules/**
+
+custom:
+  webpack:
+    webpackConfig: ./webpack.config.js
+    includeModules: true
+  customDomain:
+    domainName: ${file(config.${self:provider.stage}.json):DOMAIN_NAME}
+    certificateArn: ${file(config.${self:provider.stage}.json):CERTIFICATE_ARN}
+    basePath: rest
+    stage: ${opt:stage, 'dev'}
+    createRoute53Record: false
+    endpointType: regional
+
+functions:
+  login:
+    handler: src/api/cognito/login.handler
+    timeout: 30
+    events:
+      - http:
+          path: cognito/login
+          method: post
+          cors: true
+    tags:
+      Sistema: 'Green_Events_AR'
+      Ambiente: ${opt:stage, 'dev'}
+  validarTicket:
+    handler: src/api/welcu/validarTicket.handler
+    timeout: 30
+    events:
+      - http:
+          path: validar-ticket
+          method: post
+          cors:
+            origin: '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+              - evento
+            allowCredentials: false
+    tags:
+      Sistema: 'Green_Events_AR'
+      Ambiente: ${opt:stage, 'dev'}
+  crearUsuario:
+    handler: src/api/cognito/crearUsuario.handler
+    timeout: 30
+    events:
+      - http:
+          path: cognito/crear-usuario
+          method: post
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId:
+              Ref: ApiGatewayAuthorizer
+    tags:
+      Sistema: 'Green_Events_AR'
+      Ambiente: ${opt:stage, 'dev'}
+  editarUsuario:
+    handler: src/api/cognito/editarUsuario.handler
+    timeout: 30
+    events:
+      - http:
+          path: cognito/editar-usuario
+          method: post
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId:
+              Ref: ApiGatewayAuthorizer
+    tags:
+      Sistema: 'Green_Events_AR'
+      Ambiente: ${opt:stage, 'dev'}
+  eliminarUsuario:
+    handler: src/api/cognito/eliminarUsuario.handler
+    timeout: 30
+    events:
+      - http:
+          path: cognito/eliminar-usuario
+          method: post
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId:
+              Ref: ApiGatewayAuthorizer
+  listarUsuarios:
+    handler: src/api/cognito/listar.handler
+    timeout: 30
+    events:
+      - http:
+          path: cognito/listar
+          method: get
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId:
+              Ref: ApiGatewayAuthorizer
+    tags:
+      Sistema: 'Green_Events_AR'
+      Ambiente: ${opt:stage, 'dev'}
+  buscarEvento:
+    handler: src/api/evento/buscarEvento.handler
+    timeout: 30
+    events:
+      - http:
+          path: evento/buscar
+          method: get
+          cors:
+            origin: '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+              - evento
+            allowCredentials: false
+    tags:
+      Sistema: 'Green_Events_AR'
+      Ambiente: ${opt:stage, 'dev'}
+  buscarEventoEditar:
+    handler: src/api/evento/buscarEventoEditar.handler
+    timeout: 30
+    events:
+      - http:
+          path: evento/buscar/{id}
+          method: get
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId:
+              Ref: ApiGatewayAuthorizer
+    tags:
+      Sistema: 'Green_Events_AR'
+      Ambiente: ${opt:stage, 'dev'}
+  crearEvento:
+    handler: src/api/evento/crearEvento.handler
+    timeout: 30
+    events:
+      - http:
+          path: evento/crear
+          method: post
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId:
+              Ref: ApiGatewayAuthorizer
+    tags:
+      Sistema: 'Green_Events_AR'
+      Ambiente: ${opt:stage, 'dev'}
+  editarEvento:
+    handler: src/api/evento/editarEvento.handler
+    timeout: 30
+    events:
+      - http:
+          path: evento/editar
+          method: post
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId:
+              Ref: ApiGatewayAuthorizer
+    tags:
+      Sistema: 'Green_Events_AR'
+      Ambiente: ${opt:stage, 'dev'}
+  eliminarEvento:
+    handler: src/api/evento/eliminarEvento.handler
+    timeout: 30
+    events:
+      - http:
+          path: evento/eliminar/{id}
+          method: get
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId:
+              Ref: ApiGatewayAuthorizer
+    tags:
+      Sistema: 'Green_Events_AR'
+      Ambiente: ${opt:stage, 'dev'}
+  listarEventos:
+    handler: src/api/evento/listarEventos.handler
+    timeout: 30
+    events:
+      - http:
+          path: evento/listar
+          method: get
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId:
+              Ref: ApiGatewayAuthorizer
+    tags:
+      Sistema: 'Green_Events_AR'
+      Ambiente: ${opt:stage, 'dev'}
+  validarEventoExiste:
+    handler: src/api/evento/validarEventoExiste.handler
+    timeout: 30
+    events:
+      - http:
+          path: evento/validar
+          method: post
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId:
+              Ref: ApiGatewayAuthorizer
+    tags:
+      Sistema: 'Green_Events_AR'
+      Ambiente: ${opt:stage, 'dev'}
+  completarCreacion:
+    handler: src/api/evento/completarCreacion.handler
+    timeout: 900
+    tags:
+      Sistema: 'Green_Events_AR'
+      Ambiente: ${opt:stage, 'dev'}
+  generarUrls:
+    handler: src/api/s3/generarUrls.handler
+    timeout: 30
+    events:
+      - http:
+          path: evento/generar-urls
+          method: post
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId:
+              Ref: ApiGatewayAuthorizer
+    tags:
+      Sistema: 'Green_Events_AR'
+      Ambiente: ${opt:stage, 'dev'}
+
+resources:
+  Resources:
+    ApiGatewayRestApi:
+      Type: AWS::ApiGateway::RestApi
+      Properties:
+        Name: ${self:service}
+    ApiGatewayAuthorizer:
+      Type: AWS::ApiGateway::Authorizer
+      Properties:
+        Name: ${self:service}-authorizer
+        Type: COGNITO_USER_POOLS
+        IdentitySource: method.request.header.Authorization
+        RestApiId:
+          Ref: ApiGatewayRestApi
+        ProviderARNs:
+          - ${file(config.${self:provider.stage}.json):USER_POOL_ARN}
+    UnauthorizedResponse:
+      Type: AWS::ApiGateway::GatewayResponse
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+        ResponseType: UNAUTHORIZED
+        RestApiId: !Ref ApiGatewayRestApi
+        StatusCode: '401'
+    ExpireTokenResponse:
+      Type: AWS::ApiGateway::GatewayResponse
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+        ResponseType: EXPIRED_TOKEN
+        RestApiId: !Ref ApiGatewayRestApi
+        StatusCode: '401'
+    ErrorResponse:
+      Type: AWS::ApiGateway::GatewayResponse
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+        ResponseType: INTEGRATION_FAILURE
+        RestApiId: !Ref ApiGatewayRestApi
+        StatusCode: '400'
+    ForbiddenResponse:
+      Type: AWS::ApiGateway::GatewayResponse
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+        ResponseType: INVALID_SIGNATURE
+        RestApiId: !Ref ApiGatewayRestApi
+        StatusCode: '403'
+    NotFoundResponse:
+      Type: AWS::ApiGateway::GatewayResponse
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+        ResponseType: RESOURCE_NOT_FOUND
+        RestApiId: !Ref ApiGatewayRestApi
+        StatusCode: '404'
+    ConflictResponse:
+      Type: AWS::ApiGateway::GatewayResponse
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+        ResponseType: INTEGRATION_FAILURE
+        RestApiId: !Ref ApiGatewayRestApi
+        StatusCode: '409'
+    InternalErrorResponse:
+      Type: AWS::ApiGateway::GatewayResponse
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+        ResponseType: INTEGRATION_FAILURE
+        RestApiId: !Ref ApiGatewayRestApi
+        StatusCode: '500'

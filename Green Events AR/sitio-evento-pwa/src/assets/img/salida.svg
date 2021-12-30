@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="20.271" height="26.367" viewBox="0 0 20.271 26.367">
+  <g id="Grupo_277" data-name="Grupo 277" transform="translate(-1143 -61)">
+    <g id="Grupo_274" data-name="Grupo 274" transform="translate(1144 61)">
+      <g id="Grupo_22" data-name="Grupo 22" transform="translate(0 0)">
+        <g id="Grupo_18" data-name="Grupo 18" transform="translate(18.272 11.626) rotate(90)">
+          <path id="Trazado_2" data-name="Trazado 2" d="M13.74,18.272,0,14.643V3.629L13.74,0Z" transform="translate(0 0)" fill="#fff" stroke="#00a55e" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+        </g>
+        <g id="Grupo_20" data-name="Grupo 20" transform="translate(18.272 19.91) rotate(90)">
+          <path id="Trazado_2-2" data-name="Trazado 2" d="M5.457,18.272H0V0H5.457Z" transform="translate(0 0)" fill="#fff" stroke="#00a55e" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+        </g>
+        <g id="Grupo_17" data-name="Grupo 17" transform="translate(3.171 0)">
+          <path id="Trazado_5" data-name="Trazado 5" d="M0,0V6.4" transform="translate(5.739 7.967)" fill="none" stroke="#00a55e" stroke-linecap="round" stroke-width="2"/>
+          <g id="Polígono_4" data-name="Polígono 4" transform="translate(0)" fill="#fff" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M 9.755993843078613 8.315879821777344 L 1.79667866230011 8.315879821777344 L 5.776336193084717 1.897626280784607 L 9.755993843078613 8.315879821777344 Z" stroke="none"/>
+            <path d="M 5.776336193084717 3.795253276824951 L 3.593360900878906 7.315879344940186 L 7.959311485290527 7.315879344940186 L 5.776336193084717 3.795253276824951 M 5.776336193084717 -9.5367431640625e-07 L 11.5526762008667 9.315879821777344 L -3.814697265625e-06 9.315879821777344 L 5.776336193084717 -9.5367431640625e-07 Z" stroke="none" fill="#00a55e"/>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>
