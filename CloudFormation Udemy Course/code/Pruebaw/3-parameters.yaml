@@ -1,0 +1,96 @@
+Parameters:
+  SecurityGroupDescription:
+    Description: Security Group Descption (yo describo)
+    Type: String
+  
+  SecurityGroupPort:
+    Description: Simple description nuevamente
+    Type: Number
+    MinValue: 1150
+    MaxValue: 65535
+
+  InstanceType:
+    Description: weServer EC2 instances
+    Type: String
+    Default: t2.small
+    AllowedValues:
+      - t1.micro
+      - t2.nano
+      - t2.micro
+      - t2.small
+    ConstraintDescription: Debe ser valido el tipo de la instancia
+
+  DBPwd:
+    NoEcho: true
+    Description: the database admin account password
+    Type: String
+
+  KeyName:
+    Description: nombre de una existente keypair de una ec2
+    Type: AWS::EC2::KeyPair::KeyName
+    ConstraintDescription: debe existir previamente el par de claves
+  
+  SecurityGroupIngressCIDR:
+    Description: The IP address range
+    Type: String
+    MinLength: '9'
+    MaxLength: '18'
+    Default: 0.0.0.0/0
+    AllowedPattern: (\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})/(\d{1,2})
+    ConstraintDescription: debe ser un CIDR valido
+
+  MyVPC:
+    Description: la VPC es para operar
+    Type: AWS::EC2::VPC::Id
+
+  MySubnetIDs:
+    Description: subnet de la lista de subnets
+    Type: "List<AWS::EC2::Subnet::Id>"
+
+  DbSubnetIpBlocks:
+    Description: "Comma-delimited list de los CIDR blockes"
+    Type: CommaDelimitedList
+    Default: "10.0.48.0/24, 10.0.112.0/24, 10.0.176.0/24"
+
+Resources:
+  MyEC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      #referenciamos a los parametros
+      InstanceType: !Ref InstanceType
+      KeyName: !Ref KeyName
+      ImageId: ami-0742b4e673072066f
+      # aqeui referenciamos a un interno recurso del template
+      SubnetId: !Ref DbSubnet1
+  
+  MySecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: !Ref SecurityGroupDescription
+      SecurityGroupIngress:
+        - CidrIp: !Ref SecurityGroupIngressCIDR
+          FromPort: !Ref SecurityGroupPort
+          ToPort: !Ref SecurityGroupPort
+          IpProtocol: tcp
+      VpcId: !Ref MyVPC
+
+  DbSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties: 
+      VpcId: !Ref MyVPC
+      # nos permite seleccionar a lo largo de la lista
+      CidrBlock: !Select [0, !Ref DbSubnetIpBlocks]
+  
+  DbSubnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref MyVPC
+      # nos permite tambien seleccionar de la lista
+      CidrBlock: !Select [1, !Ref DbSubnetIpBlocks]
+
+  DbSubnet3:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref MyVPC
+      CidrBlock: !Select [2, !Ref DbSubnetIpBlocks]
+  
