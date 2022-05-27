@@ -1,0 +1,26 @@
+
+version: 0.0
+os: linux
+files:
+  - source: target/messageUtil-1.0.jar
+    destination: /usr/share/tomcat8/webapps/
+hooks:
+  BeforeInstall:
+    - location: scripts/before_install.sh
+      timeout: 300
+      runas: root
+  AfterInstall:
+    - location: scripts/after_install.sh
+      timeout: 300
+      runas: root
+  ApplicationStart:
+    - location: scripts/start_server.sh
+      timeout: 300
+      runas: root
+  ApplicationStop:
+    - location: scripts/stop_server.sh
+      timeout: 300
+      runas: root
+
+
+      https://Lus-west-2-tcprod.s3.amazonaws.com/courses/ILT-TF-200-ARCHIT/v7.0.1/lab-1-EC2/scripts/Task3.yaml
